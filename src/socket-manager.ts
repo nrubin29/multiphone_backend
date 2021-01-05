@@ -14,6 +14,10 @@ export default class SocketManager {
     console.log(`Device ${id} connected.`);
   }
 
+  getSocket(index: number) {
+    return Array.from(this.sockets.values())[index];
+  }
+
   emitToAll(text: string) {
     for (const socket of this.sockets.values()) {
       socket.send(text);

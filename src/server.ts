@@ -2,20 +2,23 @@ import * as WebSocket from "ws";
 import SocketManager from "./socket-manager";
 import ShrekCommand from "./commands/shrek.command";
 import Command from "./commands/command";
+import VideoCommand from "./commands/video.command";
 
 const socketManager = new SocketManager();
 
 const commands: { [cmd: string]: () => Command } = {
   shrek: () => new ShrekCommand(socketManager),
+  video: () => new VideoCommand(socketManager),
 };
 
 process.stdin.on("data", async (buffer) => {
-  const cmd = buffer.toString().trim();
+  const line = buffer.toString().trim();
+  const [cmd, ...args] = line.split(" ");
 
   if (cmd in commands) {
-    await commands[cmd]().run();
+    await commands[cmd]().run(args);
   } else {
-    socketManager.emitToAll(cmd);
+    socketManager.emitToAll(line);
   }
 });
 
