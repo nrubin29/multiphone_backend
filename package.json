@@ -1,0 +1,13 @@
+{
+  "name": "multiphone_backend",
+  "version": "1.0.0",
+  "main": "src/server.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^14.14.19",
+    "@types/ws": "^7.4.0"
+  },
+  "dependencies": {
+    "ws": "^7.4.2"
+  }
+}

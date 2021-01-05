@@ -1,0 +1,7 @@
+# Project exclude paths
+/node_modules/
+/src/commands/command.js
+/src/commands/shrek.command.js
+/src/server.js
+/src/socket-manager.js
+/src/util.js
