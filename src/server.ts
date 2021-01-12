@@ -3,12 +3,14 @@ import SocketManager from "./socket-manager";
 import ShrekCommand from "./commands/shrek.command";
 import Command from "./commands/command";
 import VideoCommand from "./commands/video.command";
+import CardCommand from "./commands/card.command";
 
 const socketManager = new SocketManager();
 
 const commands: { [cmd: string]: () => Command } = {
   shrek: () => new ShrekCommand(socketManager),
   video: () => new VideoCommand(socketManager),
+  card: () => new CardCommand(socketManager),
 };
 
 process.stdin.on("data", async (buffer) => {

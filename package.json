@@ -8,6 +8,7 @@
     "@types/ws": "^7.4.0"
   },
   "dependencies": {
+    "array-shuffle": "^2.0.0",
     "ws": "^7.4.2"
   }
 }
