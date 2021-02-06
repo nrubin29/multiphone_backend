@@ -1,5 +1,4 @@
 import Command from "./command";
-import { sleep } from "../util";
 
 const videos: { [videoName: string]: { width: number; height: number } } = {
   noahytp: {
@@ -23,8 +22,7 @@ export default class VideoCommand extends Command {
       return;
     }
 
-    await this.socketManager.emitToAll("video");
-    await sleep(1500);
+    await this.socketManager.sendAndWait("video");
 
     const video = videos[args[0]];
     const gridWidth = parseInt(args[1]);
@@ -53,7 +51,7 @@ export default class VideoCommand extends Command {
       );
     });
 
-    await sleep(3000);
-    await this.socketManager.emitToAll("play");
+    await this.socketManager.allReady();
+    await this.socketManager.send("play");
   }
 }

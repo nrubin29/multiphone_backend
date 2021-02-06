@@ -1,5 +1,4 @@
 import Command from "./command";
-import { sleep } from "../util";
 
 enum Piece {
   KING,
@@ -130,8 +129,7 @@ const makeChessBoard = () => [
 
 export default class ChessCommand extends Command {
   async run() {
-    this.socketManager.emitToAll("chess");
-    await sleep(1500);
+    await this.socketManager.sendAndWait("chess");
 
     const chessBoard = makeChessBoard();
     let selectedRow = -1;

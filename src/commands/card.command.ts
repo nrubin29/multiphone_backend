@@ -1,5 +1,4 @@
 import Command from "./command";
-import { sleep } from "../util";
 import arrayShuffle from "array-shuffle";
 
 const DECK: string[] = [];
@@ -26,8 +25,7 @@ for (const suit of ["C", "D", "H", "S"]) {
 
 export default class CardCommand extends Command {
   async run() {
-    this.socketManager.emitToAll("card");
-    await sleep(1500);
+    await this.socketManager.sendAndWait("card");
 
     const deck = arrayShuffle([...DECK]);
 

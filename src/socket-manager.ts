@@ -1,6 +1,6 @@
 import WebSocket, { MessageEvent } from "ws";
 import { fromEvent } from "rxjs";
-import { map } from "rxjs/operators";
+import { filter, map, mapTo, take } from "rxjs/operators";
 
 class Socket {
   packets$ = fromEvent<MessageEvent>(this.socket, "message").pipe(
@@ -11,6 +11,16 @@ class Socket {
 
   send(data: any): void {
     this.socket.send(data);
+  }
+
+  ready(): Promise<void> {
+    return this.packets$
+      .pipe(
+        filter((packet) => packet.length === 1 && packet[0] === "ready"),
+        take(1),
+        mapTo(undefined)
+      )
+      .toPromise();
   }
 }
 
@@ -28,10 +38,15 @@ export default class SocketManager {
     console.log(`Device ${id} connected.`);
   }
 
-  emitToAll(text: string) {
+  send(data: string) {
     for (const socket of this.sockets) {
-      socket.send(text);
+      socket.send(data);
     }
+  }
+
+  async sendAndWait(data: string) {
+    this.send(data);
+    await this.allReady();
   }
 
   async forEachAsync(
@@ -41,5 +56,11 @@ export default class SocketManager {
     for (const socket of this.sockets) {
       await fn(socket, i++);
     }
+  }
+
+  allReady(): Promise<void[]> {
+    return (Promise as any).allSettled(
+      this.sockets.map((socket) => socket.ready())
+    );
   }
 }

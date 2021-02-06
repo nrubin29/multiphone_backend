@@ -1,10 +1,8 @@
 import Command from "./command";
-import { sleep } from "../util";
 
 export default class ShrekCommand extends Command {
   async run() {
-    this.socketManager.emitToAll("shrek");
-    await sleep(1500);
+    await this.socketManager.sendAndWait("shrek");
 
     await this.socketManager.forEachAsync((socket, i) => {
       if (i === 0) {
@@ -14,7 +12,7 @@ export default class ShrekCommand extends Command {
       }
     });
 
-    await sleep(1500);
+    await this.socketManager.allReady();
 
     await this.socketManager.forEachAsync(async (socket, i) => {
       socket.send("play");
@@ -26,4 +24,10 @@ export default class ShrekCommand extends Command {
       }
     });
   }
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise<void>((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }

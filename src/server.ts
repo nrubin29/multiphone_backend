@@ -22,7 +22,7 @@ process.stdin.on("data", async (buffer) => {
   if (cmd in commands) {
     await commands[cmd]().run(args);
   } else {
-    socketManager.emitToAll(line);
+    socketManager.send(line);
   }
 });
 
