@@ -5,6 +5,14 @@ const videos: { [videoName: string]: { width: number; height: number } } = {
     width: 1280,
     height: 720,
   },
+  onealmond: {
+    width: 1280,
+    height: 720,
+  },
+  rickroll: {
+    width: 640,
+    height: 360,
+  },
 };
 
 // Dimensions of landscape iPhone 4(s) in pts
