@@ -13,6 +13,22 @@ const videos: { [videoName: string]: { width: number; height: number } } = {
     width: 640,
     height: 360,
   },
+  noah: {
+    width: 1280,
+    height: 720,
+  },
+  ltt: {
+    width: 640,
+    height: 360,
+  },
+  intro: {
+    width: 1920,
+    height: 1080,
+  },
+  luke: {
+    width: 1280,
+    height: 720,
+  },
 };
 
 // Dimensions of landscape iPhone 4(s) in pts
