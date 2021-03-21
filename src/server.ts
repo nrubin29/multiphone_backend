@@ -6,6 +6,7 @@ import VideoCommand from "./commands/video.command";
 import CardCommand from "./commands/card.command";
 import ChessCommand from "./commands/chess.command";
 import CameraCommand from "./commands/camera.command";
+import OrientationCommand from "./commands/orientation.command";
 
 const socketManager = new SocketManager();
 
@@ -15,6 +16,7 @@ const commands: { [cmd: string]: () => Command } = {
   card: () => new CardCommand(socketManager),
   chess: () => new ChessCommand(socketManager),
   camera: () => new CameraCommand(socketManager),
+  orientation: () => new OrientationCommand(socketManager),
 };
 
 process.stdin.on("data", async (buffer) => {
