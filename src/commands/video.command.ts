@@ -29,6 +29,10 @@ const videos: { [videoName: string]: { width: number; height: number } } = {
     width: 1280,
     height: 720,
   },
+  dababy: {
+    width: 1280,
+    height: 720,
+  },
 };
 
 // Dimensions of landscape iPhone 4(s) in pts
@@ -50,19 +54,25 @@ export default class VideoCommand extends Command {
 
     const video = videos[args[0]];
     const gridWidth = parseInt(args[1]);
+    const gridHeight = Math.ceil(this.socketManager.sockets.length / gridWidth);
 
     const virtualCanvasWidth = PHONE_WIDTH_PTS * gridWidth;
+    const virtualCanvasHeight = PHONE_HEIGHT_PTS * gridHeight;
 
     // Scale the video such that the width is equal to virtualCanvasWidth and
     // the height preserves the aspect ratio.
     const scaledVideoHeight = video.height * (virtualCanvasWidth / video.width);
 
+    // Calculate the offset necessary to vertically center the video in the
+    // virtual canvas.
+    const offsetY = -(virtualCanvasHeight - scaledVideoHeight) / 2;
+
     await this.socketManager.forEachAsync((socket, i) => {
       const row = Math.floor(i / gridWidth);
       const col = i % gridWidth;
 
-      const screenTopLeftX = PHONE_WIDTH_PTS * row + TOP_BEZEL_PTS;
-      const screenTopLeftY = PHONE_HEIGHT_PTS * col + SIDE_BEZEL_PTS;
+      const screenTopLeftX = PHONE_WIDTH_PTS * col + TOP_BEZEL_PTS;
+      const screenTopLeftY = PHONE_HEIGHT_PTS * row + SIDE_BEZEL_PTS;
 
       socket.send(
         [
@@ -70,7 +80,7 @@ export default class VideoCommand extends Command {
           virtualCanvasWidth,
           scaledVideoHeight,
           screenTopLeftX,
-          screenTopLeftY,
+          screenTopLeftY + offsetY,
         ].join(" ")
       );
     });
