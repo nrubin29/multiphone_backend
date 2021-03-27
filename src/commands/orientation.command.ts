@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import Command from "./command";
 
 export default class OrientationCommand extends Command {
